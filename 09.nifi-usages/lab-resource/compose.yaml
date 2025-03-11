@@ -1,0 +1,31 @@
+services:
+
+  nifi:
+    image: "apache/nifi:1.26.0"
+    container_name: nifi-126
+    ports:
+      - "8443:8443"
+    environment:
+      NIFI_WEB_HTTPS_PORT: "8443"
+      SINGLE_USER_CREDENTIALS_USERNAME: <NiFi username>
+      SINGLE_USER_CREDENTIALS_PASSWORD: <NiFi password>
+    volumes:
+      - ./:/shared
+
+  db:
+    image: postgres:16
+    container_name: postgres-16
+    restart: always
+    shm_size: 128mb
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=<postgres username>
+      - POSTGRES_PASSWORD=<postgres password>
+      - POSTGRES_DB=dsti_db
+  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
